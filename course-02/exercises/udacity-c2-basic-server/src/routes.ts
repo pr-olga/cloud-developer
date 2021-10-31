@@ -105,4 +105,17 @@ module.exports = (app: any) => {
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+  app.post( "/cars",
+  async ( req: Request, res: Response ) => {
+
+    const { id, type, model, cost } = req.body;
+
+    if ( !id || !type || !model || !cost ) {
+      return res.status(400)
+                .send(`Please paste all information`);
+    }
+
+    return res.status(200)
+              .send(`New car is created, ${type}, ${model}, ${cost}, ${id}}!`);
+} );
 }
