@@ -59,6 +59,25 @@ module.exports = (app: any) => {
 
   // @TODO Add an endpoint to GET a list of cars
   // it should be filterable by make with a query paramater
+  // /cars?make=the_make
+  app.get( "/cars/", ( req: Request, res: Response ) => {
+    let { make } = req.query;
+
+    try {
+      if (!make) {
+        return res.status(200).send(cars);
+      }
+
+      return res.status(200).send(cars.filter(c => c['make'] == make));
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured.'
+      })
+    }
+
+    return res.status(200).send(`response`);
+  } );
+
 
   // @TODO Add an endpoint to get a specific car
   // it should require id
