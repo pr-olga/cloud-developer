@@ -68,7 +68,7 @@ module.exports = (app: any) => {
         return res.status(200).send(cars);
       }
 
-      return res.status(200).send(cars.filter(c => c['make'] == make));
+      return res.status(200).send(cars.filter(c => c['make'] === make));
     } catch (err) {
       res.status(500).send({
         error: 'An error has occured.'
@@ -82,6 +82,26 @@ module.exports = (app: any) => {
   // @TODO Add an endpoint to get a specific car
   // it should require id
   // it should fail gracefully if no matching car is found
+  // /cars/:id
+  app.get( "/cars/:id", ( req: Request, res: Response ) => {
+    let { id } = req.params;
+
+    try {
+      if (!id) {
+        return res.status(400).send(`id is required`);
+      }
+
+      return cars.find(c => c['id'] === Number(id))
+      ? res.status(200).send(cars.find(c => c['id'] === Number(id)))
+      : res.status(404).send('car is not found');
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured.'
+      })
+    }
+
+    return res.status(200).send(`response`);
+  } );
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
